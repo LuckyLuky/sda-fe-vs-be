@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./client.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #error:not(:empty) {
+        background-color: red;
+        padding: 5px 10px;
+        color: white;
+      }
+
+      #theory {
+        max-width: 900px;
+        padding: 50px 30px;
+      }
+    </style>
+    <title>Frontend klient</title>
+  </head>
+  <body>
+    <h1>Frontend fetch klient</h1>
+
+    <div id="error"></div>
+
+    <form id="create-user-form">
+      <label for="user-id">ID</label>
+      <input id="user-id" type="text" />
+
+      <label for="user-name">Jméno</label>
+      <input id="user-name" type="text" />
+
+      <button id="create-user" type="submit">Vytvořit uživatele</button>
+    </form>
+
+    <button id="load-users">Načíst uživatele</button>
+
+    <div id="users-list"></div>
+
+    <main id="theory">
+      <h2>Trocha teorie</h2>
+
+      <h3>Bezpečnost</h3>
+      <p>
+        Obecně se dá říct, že backend je považován spíše za bezpečné prostředí
+        (i když obezřetnost je vždy na místě), zatímco frontend za spíše
+        nedůvěryhodné prostředí.
+      </p>
+      <p>
+        Na frontendu si totiž kdokoliv může číst zdrojové kódy stránky, z
+        kterých případně může vyčíst i citlivé údaje (proto bychom je nikdy
+        neměli ukládat přímo do kódu). Zároveň případný utočník se může pokoušet
+        využívat vstupy (ve formulářích) a vkládat do nich potenciálně škodlivé
+        hodnoty.
+      </p>
+      <p>
+        Backend si může dovolit uchovávat citlivé údaje, protože zvenčí nejsou
+        čitelné. Měl by ale své okolí považovat za nedůvěryhodné a veškeré
+        vstupy raději kontrolovat, zda neobsahují potenciálně škodlivý kód. Toto
+        je u backendu velmi důležité, protože kromě toho, že sám může uchovávat
+        citlivé údaje, má zároveň často přístup k jiným uložištím citlivých
+        údajů (databáže, jiné backendy, soubory, ..).
+      </p>
+      <p>
+        Jak omezit přístupy? Co se týče přístupu z kódu, k tomu nám slouží např.
+        tzv. CORS, které omezují přístupy z jiných domén. Za pomocí hlaviček
+        jako "Access-Control-Allow-Origin" můžeme omezit domény, které k nám
+        mohou přistupovat. Většina moderních prohlížečů funguje tak, že pokud
+        tuto hlavičku neuvedete, přístupy napříč doménamy nebudou fungovat.
+      </p>
+
+      <h3>Hlavní zodpovědnosti</h3>
+
+      <h4>Frontend</h4>
+      <ul>
+        <li>Vykreslit uživateli obsah co nejrychleji</li>
+        <li>Být co nejvíce interaktivní</li>
+        <li>
+          Fungovat dobře napříč různými displeji (mobil, tablet, notebook, velký
+          monitor, ..)
+        </li>
+        <li>
+          Je dobré myslet na uživatele se smyslovými postiženími - např. aby byl
+          web ovladatelný čtečkami.
+        </li>
+        <li>
+          SEO (optimalizace pro vyhledávače), sociální sítě - dbát na principy
+          pro správnou indexaci vyhledávači, používat speciální tagy pro
+          sociální sítě
+        </li>
+        <li>
+          Analytika - ať už se nám to líbí, nebo ne, uživatelé jsou často
+          sledováni
+        </li>
+      </ul>
+
+      <h4>Backend</h4>
+      <ul>
+        <li>Vrátit potřebná co nejrychleji</li>
+        <li>Spolehlivost, dostupnost</li>
+        <li>
+          Nevytěžovat příliš zdroje (procesor, paměť, ale obzvlášť databáze)
+        </li>
+        <li>
+          Cachování - ukládání už jednou požadovaných dat (např. v paměti) pro
+          rychlejší budoucí odpovědi.
+        </li>
+        <li>
+          Zabezpečení! Pokud útočník získá přístup např. k databázi, může to mít
+          ohromné následky.
+        </li>
+      </ul>
+
+      <h3>Terminologie</h3>
+      <p>
+        Upozornění: velká část těchto věcí je zčásti subjektivní a mnoho lidí je
+        chápe jinak. Neberte to proto prosím jako dogma :)
+      </p>
+
+      <h4>Frontend x backend x server x API</h4>
+
+      <h5>Frontend</h5>
+      <p>
+        Jako frontend (někdy také klient, klientská aplikace) můžeme považovat
+        vše, co se posílá do prohlížeče a podílí se na vykreslení stránek.
+        Typicky jde o HTML soubory, skripty, styly, obrázky, fonty, ..
+      </p>
+      <p>Dá se chápat i jako používání JavaScriptu v prohlížeči.</p>
+
+      <h5>Backend</h5>
+      <p>
+        Obecně se backend dá chápat jako psaní aplikací pro servery. Může se
+        někdy překrývat s frontendem, pokud vaše aplikace řeší i vykreslování
+        stránek. Pokud ale vaše backend řeší pouze data pro frontend, ale na
+        vykreslování se nijak nepodílí, dá se mluvit o čistém backendu.
+      </p>
+
+      <h5>Server</h5>
+      <p>
+        Někdy se zaměňuje s backendem, ale pokud bychom chtěli tyto termíny
+        odlišovat, server by pravděpodobně spíše odpovídal fyzickému zařízení,
+        na kterém je apliakce spuštěná.
+      </p>
+
+      <h5>API</h5>
+      <p>
+        API má v různých oborech různé významy (např. webové vs desktopové nebo
+        mobilní aplikace), ale u webových aplikací se často chápe jako kombinace
+        URL adresy (to, co vidíme např. v adresním řádku prohlížeče) a metody
+        požadavku (GET, POST, ..). Jinými slovy jde o rozhraní, které vám
+        umožňuje číst nebo modifikovat určitá data.
+      </p>
+      <p>
+        V našem příkladu jsme měli např. API pro čtení (všech) uživatelů, API
+        pro čtení konkrétního uživatele a API pro vytvoření nového uživatele.
+      </p>
+    </main>
+  </body>
+</html>
